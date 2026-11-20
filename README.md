@@ -1,9 +1,19 @@
-# Validação Inteligente de Procuração ad Judicia
+<div align="center">
 
-**Caso:** TJPE (serviços digitais) · **Documento:** procuração ad judicia ·
-**Autoria:** Maria Eduarda Vasconcelos
-**Residência Tecnológica:** CESAR School e Porto Digital 2026.2                                                                              
-![Java](https://img.shields.io/badge/Java-21-informational?style=flat-square)![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-informational?style=flat-square)![OpenCV](https://img.shields.io/badge/OpenCV-visão%20computacional-informational?style=flat-square)![Tesseract](https://img.shields.io/badge/Tesseract-OCR-informational?style=flat-square)![PostgreSQL](https://img.shields.io/badge/PostgreSQL-persistência-informational?style=flat-square)
+# Validação Inteligente de Procuração Ad Judicia
+
+**Caso:** TJPE (serviços digitais) · **Documento:** procuração ad judicia · **Autoria:** Maria Eduarda Vasconcelos  
+**Residência Tecnológica:** CESAR School e Porto Digital 2026.2
+
+[![Java](https://img.shields.io/badge/Java-21-5382A1?style=flat-square)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?style=flat-square)](https://spring.io/projects/spring-boot)
+[![OpenCV](https://img.shields.io/badge/OpenCV-vis%C3%A3o%20computacional-0288D1?style=flat-square)](https://opencv.org/)
+[![Tesseract](https://img.shields.io/badge/Tesseract-OCR-5382A1?style=flat-square)](https://github.com/tesseract-ocr/tesseract)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-persist%C3%AAncia-0288D1?style=flat-square)](https://www.postgresql.org/)
+
+</div>
+
+---
 
 ## Problema
 Serviços do TJPE, como o peticionamento eletrônico, exigem o envio de procurações *ad judicia* conferidas manualmente por servidores do cartório. Isso gera filas, retrabalho e demora: o advogado envia o documento, aguarda e só depois descobre que foi rejeitado — muitas vezes sem entender o motivo.
