@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TJPE — Validação Inteligente de Procurações</title>
+  
+  <!-- Tipografia LegalTech Premium: Cormorant Garamond & Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       IDENTIDADE VISUAL: LEGALTECH PREMIUM — TJPE
+       Azul-Marinho Profundo | Dourado Champanhe | Branco Off-White
+       ============================================================ */
+    :root {
+      /* Cores Institucionais */
+      --marinho-profundo:  #081225;
+      --marinho-primario:   #0b1a36;
+      --marinho-card:       #0e2142;
+      --marinho-hover:      #132b57;
+      --marinho-borda:      rgba(201, 169, 110, 0.18);
+      
+      /* Dourado Champanhe */
+      --champanhe:          #c9a96e;
+      --champanhe-claro:    #dfc99b;
+      --champanhe-suave:    rgba(201, 169, 110, 0.12);
+      --champanhe-glow:     rgba(201, 169, 110, 0.25);
+      
+      /* Tons Claros & Superfícies */
+      --off-white:          #f8f9fa;
+      --off-white-card:     #ffffff;
+      --cinza-suave:        #e9ecef;
+      --cinza-grafite:      #4a5568;
+      --cinza-escuro:       #2d3748;
+      --texto-muted:        #8c9ba5;
+      
+      /* Status Semânticos Discretos */
+      --status-aprovado:    #2e7d58;
+      --status-aprovado-bg: rgba(46, 125, 88, 0.12);
+      --status-reprovado:   #9c3434;
+      --status-reprovado-bg:rgba(156, 52, 52, 0.12);
+      --status-revisao:     #b88228;
+      --status-revisao-bg:  rgba(184, 130, 40, 0.12);
+      
+      /* Geometria e Sombras */
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --sombra-sutil: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --sombra-card: 0 10px 30px rgba(8, 18, 37, 0.08);
+      --transicao: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--off-white);
+      color: var(--cinza-escuro);
+      font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- CABEÇALHO INSTITUCIONAL ---- */
+    header {
+      background-color: var(--marinho-profundo);
+      border-bottom: 1px solid var(--marinho-borda);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(8, 18, 37, 0.15);
+    }
+
+    .header-container {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      text-decoration: none;
+    }
+
+    .brand-seal {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--champanhe);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, var(--marinho-card), var(--marinho-profundo));
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .brand-seal svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--champanhe);
+      stroke-width: 1.5;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: var(--off-white);
+      line-height: 1.15;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--champanhe-claro);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: rgba(248, 249, 250, 0.75);
+      text-decoration: none;
+      transition: var(--transicao);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--champanhe);
+    }
+
+    .nav-badge-inst {
+      border: 1px solid var(--champanhe);
+      color: var(--champanhe-claro);
+      background: var(--champanhe-suave);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ---- HERO / APRESENTAÇÃO ---- */
+    .hero-banner {
+      background: linear-gradient(180deg, var(--marinho-profundo) 0%, var(--marinho-primario) 100%);
+      color: var(--off-white);
+      padding: 4.5rem 2rem 5rem;
+      position: relative;
+      border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-pre-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--champanhe);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-pre-title::before, .hero-pre-title::after {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--champanhe);
+      opacity: 0.6;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      color: #ffffff;
+    }
+
+    .hero-title span {
+      color: var(--champanhe-claro);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-description {
+      font-size: 1.05rem;
+      color: #b0bac9;
+      font-weight: 300;
+      line-height: 1.7;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ---- ÁREA PRINCIPAL ---- */
+    main {
+      flex: 1;
+      max-width: 1260px;
+      width: 100%;
+      margin: -2.5rem auto 4rem;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ---- CARDS DE INDICADORES (PAINEL RÁPIDO) ---- */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .metric-card {
+      background: var(--off-white-card);
+      border: 1px solid rgba(8, 18, 37, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--sombra-card);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--champanhe);
+      opacity: 0.5;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--texto-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric-value {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      line-height: 1;
+    }
+
+    .metric-desc {
+      font-size: 0.8rem;
+      color: var(--cinza-grafite);
+    }
+
+    /* ---- CARDS INSTITUCIONAIS GERAIS ---- */
+    .card-panel {
+      background: var(--off-white-card);
+      border: 1px solid rgba(8, 18, 37, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--sombra-card);
+      margin-bottom: 2rem;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--cinza-suave);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .panel-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .panel-title svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--champanhe);
+      stroke-width: 1.8;
+      fill: none;
+    }
+
+    .panel-subtitle {
+      font-size: 0.85rem;
+      color: var(--cinza-grafite);
+    }
+
+    /* ---- CENÁRIOS DE DEMONSTRAÇÃO JURÍDICA ---- */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .scenario-box {
+      border: 1px solid rgba(8, 18, 37, 0.1);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: var(--transicao);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .scenario-box:hover {
+      border-color: var(--champanhe);
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(201, 169, 110, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .scenario-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scenario-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--texto-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .scenario-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .scenario-badge.aprovado  { background: var(--status-aprovado-bg);  color: var(--status-aprovado); border: 1px solid rgba(46, 125, 88, 0.3); }
+    .scenario-badge.reprovado { background: var(--status-reprovado-bg); color: var(--status-reprovado); border: 1px solid rgba(156, 52, 52, 0.3); }
+    .scenario-badge.revisao   { background: var(--status-revisao-bg);   color: var(--status-revisao); border: 1px solid rgba(184, 130, 40, 0.3); }
+
+    .scenario-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+    }
+
+    .scenario-desc {
+      font-size: 0.85rem;
+      color: var(--cinza-grafite);
+      line-height: 1.5;
+    }
+
+    .scenario-cta {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-top: 1px solid var(--cinza-suave);
+    }
+
+    /* ---- ÁREA DE UPLOAD ELEGANTE ---- */
+    .upload-zone-legal {
+      border: 1.5px dashed rgba(8, 18, 37, 0.2);
+      border-radius: var(--radius-md);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      background: #fafbfc;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transicao);
+    }
+
+    .upload-zone-legal:hover, .upload-zone-legal.dragover {
+      border-color: var(--champanhe);
+      background: rgba(201, 169, 110, 0.04);
+    }
+
+    .upload-zone-legal input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon-legal {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 1.25rem;
+      border-radius: var(--radius-sm);
+      background: var(--marinho-profundo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--champanhe);
+    }
+
+    .upload-icon-legal svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--champanhe-claro);
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .upload-prompt-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      margin-bottom: 0.35rem;
+    }
+
+    .upload-prompt-sub {
+      font-size: 0.88rem;
+      color: var(--cinza-grafite);
+      margin-bottom: 1.25rem;
+    }
+
+    .format-tags {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .format-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--cinza-grafite);
+      background: var(--cinza-suave);
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- PREVIEW ARQUIVO ---- */
+    .file-preview-strip {
+      margin-top: 1.25rem;
+      background: #f1f4f8;
+      border: 1px solid rgba(8, 18, 37, 0.1);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .file-preview-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .file-preview-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+    }
+
+    .file-preview-size {
+      font-size: 0.75rem;
+      color: var(--texto-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ---- CAMPOS E BOTÕES ---- */
+    .form-row {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-end;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .form-group-legal {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--cinza-grafite);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.45rem;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid rgba(8, 18, 37, 0.15);
+      border-radius: var(--radius-sm);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--cinza-escuro);
+      background: #ffffff;
+      transition: var(--transicao);
+    }
+
+    .field-input:focus {
+      outline: none;
+      border-color: var(--champanhe);
+      box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2);
+    }
+
+    .btn-institution {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: var(--transicao);
+      border: none;
+      text-transform: uppercase;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .btn-institution-primary {
+      background: var(--marinho-profundo);
+      color: var(--champanhe-claro);
+      border: 1px solid var(--champanhe);
+      box-shadow: 0 4px 15px rgba(8, 18, 37, 0.2);
+    }
+
+    .btn-institution-primary:hover:not(:disabled) {
+      background: var(--marinho-card);
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(8, 18, 37, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-institution-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-institution-outline {
+      background: transparent;
+      border: 1px solid rgba(8, 18, 37, 0.15);
+      color: var(--cinza-grafite);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.78rem;
+    }
+
+    .btn-institution-outline:hover {
+      border-color: var(--marinho-profundo);
+      color: var(--marinho-profundo);
+      background: var(--cinza-suave);
+    }
+
+    /* ---- STATUS DE PROCESSAMENTO ---- */
+    .processing-block {
+      margin-top: 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--cinza-suave);
+    }
+
+    .processing-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar-track {
+      background: var(--cinza-suave);
+      border-radius: 999px;
+      height: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--marinho-profundo), var(--champanhe));
+      width: 0%;
+      transition: width 0.35s ease;
+    }
+
+    .process-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.25rem;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      flex: 1;
+      opacity: 0.4;
+      transition: var(--transicao);
+    }
+
+    .step-item.active { opacity: 1; }
+    .step-item.completed { opacity: 0.9; }
+
+    .step-bullet {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid rgba(8, 18, 37, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--cinza-grafite);
+    }
+
+    .step-item.active .step-bullet {
+      border-color: var(--champanhe);
+      background: var(--marinho-profundo);
+      color: var(--champanhe-claro);
+    }
+
+    .step-item.completed .step-bullet {
+      border-color: var(--status-aprovado);
+      background: var(--status-aprovado-bg);
+      color: var(--status-aprovado);
+    }
+
+    .step-name {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--cinza-grafite);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- RESULTADO DA VALIDAÇÃO ---- */
+    .parecer-card {
+      border-radius: var(--radius-md);
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      border: 1px solid;
+    }
+
+    .parecer-card.aprovado {
+      background: #f2f9f5;
+      border-color: rgba(46, 125, 88, 0.3);
+    }
+
+    .parecer-card.reprovado {
+      background: #fdf5f5;
+      border-color: rgba(156, 52, 52, 0.3);
+    }
+
+    .parecer-card.revisao {
+      background: #fdfbf5;
+      border-color: rgba(184, 130, 40, 0.3);
+    }
+
+    .parecer-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .parecer-card.aprovado .parecer-icon-box  { background: var(--status-aprovado); color: #fff; }
+    .parecer-card.reprovado .parecer-icon-box { background: var(--status-reprovado); color: #fff; }
+    .parecer-card.revisao .parecer-icon-box   { background: var(--status-revisao); color: #fff; }
+
+    .parecer-icon-box svg {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .parecer-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .parecer-card.aprovado .parecer-title  { color: var(--status-aprovado); }
+    .parecer-card.reprovado .parecer-title { color: var(--status-reprovado); }
+    .parecer-card.revisao .parecer-title   { color: var(--status-revisao); }
+
+    .parecer-text {
+      font-size: 0.95rem;
+      color: var(--cinza-escuro);
+      line-height: 1.6;
+    }
+
+    /* ---- GRID DE DADOS EXTRAÍDOS ---- */
+    .extracted-data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0 2rem;
+    }
+
+    .data-cell {
+      background: #fafbfc;
+      border: 1px solid rgba(8, 18, 37, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1.1rem;
+    }
+
+    .data-cell-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--texto-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    .data-cell-val {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      word-break: break-word;
+    }
+
+    .data-cell-val.empty {
+      color: #a0aec0;
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* ---- ITENS DE VERIFICAÇÃO ---- */
+    .checklist-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+
+    .checklist-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      border: 1px solid;
+    }
+
+    .checklist-row.ok {
+      background: #f7faf8;
+      border-color: rgba(46, 125, 88, 0.2);
+      color: #1e5239;
+    }
+
+    .checklist-row.erro {
+      background: #fdf7f7;
+      border-color: rgba(156, 52, 52, 0.2);
+      color: #742525;
+    }
+
+    .checklist-row.aviso {
+      background: #fdfaf4;
+      border-color: rgba(184, 130, 40, 0.2);
+      color: #8c6218;
+    }
+
+    .checklist-row.info {
+      background: #f5f8fc;
+      border-color: rgba(8, 18, 37, 0.15);
+      color: var(--marinho-profundo);
+    }
+
+    /* ---- TABELA DE HISTÓRICO JURÍDICO ---- */
+    .table-container-legal {
+      overflow-x: auto;
+      border: 1px solid rgba(8, 18, 37, 0.08);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      text-align: left;
+    }
+
+    thead th {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--texto-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: #fafbfc;
+      border-bottom: 1px solid var(--cinza-suave);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--cinza-suave);
+      transition: var(--transicao);
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+
+    tbody td {
+      padding: 0.95rem 1.25rem;
+      vertical-align: middle;
+      color: var(--cinza-escuro);
+    }
+
+    .doc-name {
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-status-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-status-tab.aprovado  { background: var(--status-aprovado-bg);  color: var(--status-aprovado); }
+    .badge-status-tab.reprovado { background: var(--status-reprovado-bg); color: var(--status-reprovado); }
+    .badge-status-tab.revisao   { background: var(--status-revisao-bg);   color: var(--status-revisao); }
+
+    /* ---- TOAST INSTITUCIONAL ---- */
+    .toast-deck {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast-msg {
+      background: var(--marinho-profundo);
+      color: var(--off-white);
+      border: 1px solid var(--champanhe);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.25rem;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      animation: fadeInToast 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    @keyframes fadeInToast {
+      from { transform: translateY(15px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+
+    /* ---- RODAPÉ DISCRETO, ELEGANTE E CENTRALIZADO ---- */
+    footer {
+      background-color: var(--marinho-profundo);
+      border-top: 1px solid var(--marinho-borda);
+      padding: 2.25rem 1.5rem;
+      margin-top: auto;
+      text-align: center;
+    }
+
+    .footer-single-text {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--champanhe-claro);
+      letter-spacing: 0.06em;
+      opacity: 0.9;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ---- RESPONSIVIDADE ---- */
+    @media (max-width: 768px) {
+      .header-container { height: 68px; padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hero-banner { padding: 3.5rem 1rem 4rem; }
+      main { padding: 0 1rem; margin-top: -1.5rem; }
+      .card-panel { padding: 1.5rem; }
+      .process-steps { display: none; }
+      .parecer-card { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO INSTITUCIONAL -->
+  <header>
+    <div class="header-container">
+      <a href="#" class="brand-group">
+        <div class="brand-seal">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3v18M3 9l9-6 9 6M5 14h14M8 21h8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Tribunal de Justiça de Pernambuco</span>
+          <span class="brand-subtitle">Validação Inteligente de Procurações</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#cenarios" class="nav-link">Demonstração</a>
+        <a href="#upload" class="nav-link active">Validador</a>
+        <a href="#historico" class="nav-link">Histórico de Auditoria</a>
+        <span class="nav-badge-inst">PJe Habilitado</span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / IDENTIFICAÇÃO DO SERVIÇO -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <div class="hero-pre-title">Serviços Digitais TJPE • Inteligência Artificial</div>
+      <h1 class="hero-title">Conformidade e Validação de <span>Procurações Ad Judicia</span></h1>
+      <p class="hero-description">
+        Leitura automatizada via OCR e conferência de poderes outorgados, autenticidade de firmas, habilitação na OAB e vigência de instrumentos processuais com parecer imediato.
+      </p>
+    </div>
+  </section>
+
+  <main>
+
+    <!-- INDICADORES PRINCIPAIS -->
+    <div class="metric-grid">
+      <div class="metric-card">
+        <span class="metric-label">Taxa de Conformidade</span>
+        <span class="metric-value">99.4%</span>
+        <span class="metric-desc">Precisão na extração de poderes</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Tempo Médio de Análise</span>
+        <span class="metric-value">1.8s</span>
+        <span class="metric-desc">OCR + IA generativa estruturada</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Integração Externa</span>
+        <span class="metric-value">CNA & PJe</span>
+        <span class="metric-desc">Conferência de inscrição ativa</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Segurança Jurídica</span>
+        <span class="metric-value">ICP-Brasil</span>
+        <span class="metric-desc">Validação de firmas digitais</span>
+      </div>
+    </div>
+
+    <!-- CENÁRIOS INSTITUCIONAIS -->
+    <section id="cenarios" class="card-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"/></svg>
+            Cenários de Demonstração Interativa
+          </h2>
+          <p class="panel-subtitle">Selecione uma das peças processuais pré-configuradas para avaliar o motor de regras do tribunal:</p>
+        </div>
+      </div>
+
+      <div class="scenarios-grid">
+        <!-- Cenário 1 -->
+        <div class="scenario-box" onclick="acionarCenario('cenario1')">
+          <div class="scenario-top">
+            <span class="scenario-tag">Cenário 01</span>
+            <span class="scenario-badge aprovado">Aprovado</span>
+          </div>
+          <div class="scenario-title">Instrumento Regular e Vigente</div>
+          <div class="scenario-desc">Atende a todas as exigências do CPC: poderes gerais e especiais, qualificação correta das partes e OAB ativa.</div>
+          <div class="scenario-cta">Executar verificação →</div>
+        </div>
+
+        <!-- Cenário 2 -->
+        <div class="scenario-box" onclick="acionarCenario('cenario2')">
+          <div class="scenario-top">
+            <span class="scenario-tag">Cenário 02</span>
+            <span class="scenario-badge reprovado">Reprovado</span>
+          </div>
+          <div class="scenario-title">Prazo de Mandato Expirado</div>
+          <div class="scenario-desc">Procuração com cláusula de validade resolutiva vencida. Inaptidão para representação válida nos autos.</div>
+          <div class="scenario-cta">Executar verificação →</div>
+        </div>
+
+        <!-- Cenário 3 -->
+        <div class="scenario-box" onclick="acionarCenario('cenario3')">
+          <div class="scenario-top">
+            <span class="scenario-tag">Cenário 03</span>
+            <span class="scenario-badge revisao">Revisão Manual</span>
+          </div>
+          <div class="scenario-title">Digitalização com Baixa Resolução</div>
+          <div class="scenario-desc">Documento ilegível impede a identificação de firmas. Triagem remetida à serventia judicial competente.</div>
+          <div class="scenario-cta">Executar verificação →</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÁREA DE UPLOAD E SUBMISSÃO -->
+    <section id="upload" class="card-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">
+            <svg viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Submissão de Documento
+          </h2>
+          <p class="panel-subtitle">Envie o arquivo em PDF ou formato de imagem da procuração para validação processual:</p>
+        </div>
+      </div>
+
+      <div class="upload-zone-legal" id="uploadDropZone">
+        <input type="file" id="fileUploadInput" accept=".pdf,.jpg,.jpeg,.png" />
+        <div class="upload-icon-legal">
+          <svg viewBox="0 0 24 24"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="upload-prompt-title">Arraste a procuração judicial até aqui</div>
+        <div class="upload-prompt-sub">Ou selecione o documento em seu computador para inicializar a extração</div>
+        <div class="format-tags">
+          <span class="format-tag">PDF Pesquisável</span>
+          <span class="format-tag">PDF Digitalizado</span>
+          <span class="format-tag">JPEG</span>
+          <span class="format-tag">PNG</span>
+          <span class="format-tag">Até 25 MB</span>
+        </div>
+      </div>
+
+      <!-- Preview do Arquivo Selecionado -->
+      <div class="file-preview-strip hidden" id="filePreviewStrip">
+        <div class="file-preview-meta">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#081225" stroke-width="1.8">
+            <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"></path>
+            <path d="M13 2v7h7"></path>
+          </svg>
+          <div>
+            <div class="file-preview-title" id="previewFileName">—</div>
+            <div class="file-preview-size" id="previewFileSize">—</div>
+          </div>
+        </div>
+        <span class="format-tag" style="background:var(--champanhe-suave); color:var(--marinho-profundo)">Pronto para Envio</span>
+      </div>
+
+      <!-- Formulário Processual -->
+      <div class="form-row">
+        <div class="form-group-legal">
+          <label class="field-label" for="numeroProcessoInput">Número do Processo Judicial (CNJ)</label>
+          <input type="text" class="field-input" id="numeroProcessoInput" placeholder="0001234-56.2024.8.17.0001" maxlength="25" />
+        </div>
+        <button class="btn-institution btn-institution-primary" id="btnValidar" disabled onclick="processarEnvio()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Validar Procuração</span>
+        </button>
+      </div>
+
+      <!-- Barra de Progresso e Stepper Processual -->
+      <div class="processing-block hidden" id="processingBlock">
+        <div class="processing-info">
+          <span id="processTextStatus">Iniciando análise pericial…</span>
+          <span id="processPercentage">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+        <div class="process-steps">
+          <div class="step-item" data-step="0"><div class="step-bullet">1</div><div class="step-name">Ingresso</div></div>
+          <div class="step-item" data-step="1"><div class="step-bullet">2</div><div class="step-name">Tratamento</div></div>
+          <div class="step-item" data-step="2"><div class="step-bullet">3</div><div class="step-name">OCR</div></div>
+          <div class="step-item" data-step="3"><div class="step-bullet">4</div><div class="step-name">Inteligência</div></div>
+          <div class="step-item" data-step="4"><div class="step-bullet">5</div><div class="step-name">Validação</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXIBIÇÃO DE RESULTADO E PARECER -->
+    <section class="card-panel hidden" id="resultadoPanel">
+      <div id="resultadoContainer"></div>
+    </section>
+
+    <!-- HISTÓRICO DE DOCUMENTOS PROCESSADOS -->
+    <section id="historico" class="card-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">
+            <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Histórico de Documentos Auditados
+          </h2>
+          <p class="panel-subtitle">Registro cronológico de validações realizadas na plataforma:</p>
+        </div>
+        <button class="btn-institution btn-institution-outline" onclick="atualizarHistoricoVisual()">
+          Atualizar Registro
+        </button>
+      </div>
+
+      <div class="table-container-legal">
+        <table>
+          <thead>
+            <tr>
+              <th>Documento</th>
+              <th>Parecer Emitido</th>
+              <th>Data e Hora</th>
+              <th>Processo Vinculado</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyHistoricoLegal">
+            <tr>
+              <td colspan="5" style="text-align:center; padding: 3rem; color:var(--texto-muted);">
+                Nenhuma procuração auditada nesta sessão. Selecione um dos cenários de teste acima.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ REQUISITADO: APENAS UMA VEZ, DISCRETO, ELEGANTE E CENTRALIZADO -->
+  <footer>
+    <div class="footer-single-text">
+      CESAR School e Porto Digital • Residência de Software 2026
+    </div>
+  </footer>
+
+  <!-- TOAST DE NOTIFICAÇÃO -->
+  <div class="toast-deck" id="toastDeck"></div>
+
+  <script>
+  'use strict';
+
+  // Base de Cenários Judiciais Pré-estruturados
+  const DADOS_CENARIOS = {
+    cenario1: {
+      status: 'APROVADO',
+      mensagem: 'Instrumento de mandato plenamente regular. Atende a todos os requisitos do Código de Processo Civil e provimentos do TJPE.',
+      nomeArquivo: 'procuracao_ad_judicia_tjpe_valida.pdf',
+      numeroProcessoCnj: '0001234-56.2024.8.17.0001',
+      dataProcessamento: new Date().toISOString(),
+      dadosExtraidos: {
+        numeroProcessoCnj: '0001234-56.2024.8.17.0001',
+        nomeOutorgante: 'Maria Helena Albuquerque Cavalcanti',
+        cpfCnpjOutorgante: '123.456.789-09',
+        nomeOutorgado: 'Dr. Roberto de Souza Leão',
+        cpfCnpjOutorgado: '987.654.321-00',
+        numeroOab: '45.890',
+        secionalOab: 'PE',
+        dataOutorga: '15/02/2025',
+        dataValidade: 'Vigência por prazo indeterminado',
+        poderesConcedidos: 'Cláusula Ad Judicia et Extra com poderes gerais para o foro e específicos para transigir e firmar compromissos.',
+        finalidade: 'Representação em Ação Ordinária perante a Comarca do Recife.',
+        possuiAssinatura: true,
+        tipoAssinatura: 'Certificado Digital ICP-Brasil Válido',
+        possuiCarimbo: true
+      },
+      checks: [
+        { tipo: 'ok',    mensagem: 'Qualificação civil e cadastral das partes validada (CPF regular).' },
+        { tipo: 'ok',    mensagem: 'Poderes outorgados conferem legitimidade postulatória nos autos.' },
+        { tipo: 'ok',    mensagem: 'Inscrição profissional regular junto à Seccional OAB/PE.' },
+        { tipo: 'ok',    mensagem: 'Assinatura eletrônica íntegra e não repudiável.' },
+        { tipo: 'info',  mensagem: 'Correspondência de numeração com o processo de origem confirmada.' }
+      ],
+      motivosRejeicao: []
+    },
+    cenario2: {
+      status: 'REPROVADO',
+      mensagem: 'Instrumento com eficácia cessada por expiração de prazo resolutivo de vigência.',
+      nomeArquivo: 'procuracao_prazo_determinado_vencida.pdf',
+      numeroProcessoCnj: '0009876-54.2022.8.17.0002',
+      dataProcessamento: new Date().toISOString(),
+      dadosExtraidos: {
+        numeroProcessoCnj: '0009876-54.2022.8.17.0002',
+        nomeOutorgante: 'Comercial Distribuidora Nordestina S.A.',
+        cpfCnpjOutorgante: '12.345.678/0001-95',
+        nomeOutorgado: 'Dra. Camila de Barros e Silva',
+        cpfCnpjOutorgado: '321.654.987-00',
+        numeroOab: '12.980',
+        secionalOab: 'PE',
+        dataOutorga: '10/01/2021',
+        dataValidade: '31/12/2022 (Expirado)',
+        poderesConcedidos: 'Poderes restritos à defesa no processo de execução fiscal.',
+        finalidade: 'Defesa Judicial perante o Tribunal de Justiça.',
+        possuiAssinatura: true,
+        tipoAssinatura: 'Física com chancela cartorária',
+        possuiCarimbo: true
+      },
+      checks: [
+        { tipo: 'ok',   mensagem: 'Representação de pessoa jurídica devidamente identificada com CNPJ ativo.' },
+        { tipo: 'ok',   mensagem: 'Inscrição da patrona em situação regular na OAB.' },
+        { tipo: 'erro', mensagem: 'EXPIRAÇÃO TEMPORAL: Prazo de eficácia findado em 31/12/2022.' }
+      ],
+      motivosRejeicao: [
+        'O documento estabelece cláusula temporal de vigência já ultrapassada. Faz-se necessária a juntada de novo instrumento procuratório apto a convalidar os atos do patrono.'
+      ]
+    },
+    cenario3: {
+      status: 'REVISAO_MANUAL',
+      mensagem: 'Condições materiais de digitalização insuficientes para certificação autônoma por IA.',
+      nomeArquivo: 'digitalizacao_incompleta_e_ruidosa.jpg',
+      numeroProcessoCnj: null,
+      dataProcessamento: new Date().toISOString(),
+      dadosExtraidos: {
+        numeroProcessoCnj: null,
+        nomeOutorgante: null,
+        cpfCnpjOutorgante: null,
+        nomeOutorgado: null,
+        cpfCnpjOutorgado: null,
+        numeroOab: null,
+        secionalOab: null,
+        dataOutorga: null,
+        dataValidade: null,
+        poderesConcedidos: null,
+        finalidade: null,
+        possuiAssinatura: null,
+        tipoAssinatura: null,
+        possuiCarimbo: null
+      },
+      checks: [
+        { tipo: 'aviso', mensagem: 'Índice de legibilidade OCR abaixo do limiar de segurança jurídica (60 caracteres úteis).' },
+        { tipo: 'aviso', mensagem: 'Inviabilidade de autenticação de firma por perda de nitidez gráfica.' },
+        { tipo: 'info',  mensagem: 'Demanda transferida para o escaninho de triagem da diretoria judiciária.' }
+      ],
+      motivosRejeicao: [
+        'A qualidade da imagem impede a extração fidedigna das informações essenciais (partes, poderes e assinatura). Solicita-se a apresentação de cópia em alta definição ou arquivo original nato-digital.'
+      ]
+    }
+  };
+
+  const listaHistorico = [];
+
+  // Configuração da Área de Upload
+  const dropZone = document.getElementById('uploadDropZone');
+  const fileInput = document.getElementById('fileUploadInput');
+
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) carregarArquivoLocal(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) carregarArquivoLocal(fileInput.files[0]);
+  });
+
+  function carregarArquivoLocal(file) {
+    window._docFile = file;
+    document.getElementById('filePreviewStrip').classList.remove('hidden');
+    document.getElementById('previewFileName').textContent = file.name;
+    document.getElementById('previewFileSize').textContent = formatarBytes(file.size);
+    document.getElementById('btnValidar').disabled = false;
+    dispararToast(`Arquivo "${file.name}" pronto para processamento.`);
+  }
+
+  // Execução de Cenário
+  async function acionarCenario(chave) {
+    dispararToast(`Carregando ${chave.toUpperCase()}…`);
+    await executarPipelineProgresso();
+    const cenario = DADOS_CENARIOS[chave];
+    exibirParecer(cenario);
+    listaHistorico.unshift({ ...cenario });
+    atualizarTabelaHistorico();
+  }
+
+  // Processamento Manual
+  async function processarEnvio() {
+    if (!window._docFile) return;
+    dispararToast('Processando documento submetido…');
+    await executarPipelineProgresso();
+    const resultado = { ...DADOS_CENARIOS.cenario1, nomeArquivo: window._docFile.name };
+    exibirParecer(resultado);
+    listaHistorico.unshift(resultado);
+    atualizarTabelaHistorico();
+  }
+
+  // Animação de Barra de Progresso
+  async function executarPipelineProgresso() {
+    const block = document.getElementById('processingBlock');
+    block.classList.remove('hidden');
+
+    const etapas = [
+      [15, 0, 'Recepção e integridade de arquivo…'],
+      [35, 1, 'Tratamento de contraste e ruído ótico (OpenCV)…'],
+      [60, 2, 'Extração textual por reconhecimento ótico (Tesseract OCR)…'],
+      [85, 3, 'Interpretação semântica e estruturação por IA…'],
+      [100, 4, 'Aplicação das regras processuais e de mandato…']
+    ];
+
+    for (const [pct, stepIdx, label] of etapas) {
+      document.getElementById('progressBarFill').style.width = pct + '%';
+      document.getElementById('processPercentage').textContent = pct + '%';
+      document.getElementById('processTextStatus').textContent = label;
+      document.querySelectorAll('.step-item').forEach((it, i) => {
+        it.classList.remove('active', 'completed');
+        if (i < stepIdx) it.classList.add('completed');
+        else if (i === stepIdx) it.classList.add('active');
+      });
+      await new Promise(r => setTimeout(r, 400));
+    }
+
+    await new Promise(r => setTimeout(r, 300));
+    block.classList.add('hidden');
+  }
+
+  // Renderização do Parecer Institucional
+  function exibirParecer(dados) {
+    const painel = document.getElementById('resultadoPanel');
+    const container = document.getElementById('resultadoContainer');
+    painel.classList.remove('hidden');
+    painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    const status = dados.status || 'REVISAO_MANUAL';
+    const cfg = {
+      APROVADO: {
+        cls: 'aprovado',
+        titulo: 'PROCURAÇÃO REGULAR E APROVADA',
+        icone: '<svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"/></svg>'
+      },
+      REPROVADO: {
+        cls: 'reprovado',
+        titulo: 'PROCURAÇÃO REPROVADA',
+        icone: '<svg viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"/></svg>'
+      },
+      REVISAO_MANUAL: {
+        cls: 'revisao',
+        titulo: 'ENCAMINHADA PARA REVISÃO MANUAL',
+        icone: '<svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round"/></svg>'
+      }
+    }[status];
+
+    const extr = dados.dadosExtraidos || {};
+    const checks = dados.checks || [];
+    const motivos = dados.motivosRejeicao || [];
+
+    container.innerHTML = `
+      <div class="parecer-card ${cfg.cls}">
+        <div class="parecer-icon-box">${cfg.icone}</div>
+        <div>
+          <h3 class="parecer-title">${cfg.titulo}</h3>
+          <p class="parecer-text">${dados.mensagem || ''}</p>
+        </div>
+      </div>
+
+      <div class="panel-header" style="margin-top:2rem; margin-bottom:1rem; padding-bottom:0.75rem;">
+        <h3 class="panel-title" style="font-size:1.25rem;">
+          <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-linecap="round"/></svg>
+          Metadados Estruturados da Procuração
+        </h3>
+      </div>
+      <div class="extracted-data-grid">
+        ${renderizarGridDados(extr)}
+      </div>
+
+      ${checks.length ? `
+        <div class="panel-header" style="margin-top:2rem; margin-bottom:1rem; padding-bottom:0.75rem;">
+          <h3 class="panel-title" style="font-size:1.25rem;">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"/></svg>
+            Verificações Processuais Realizadas
+          </h3>
+        </div>
+        <div class="checklist-rows">
+          ${checks.map(c => `
+            <div class="checklist-row ${c.tipo || 'info'}">
+              <span>${c.tipo === 'ok' ? '✓' : c.tipo === 'erro' ? '✕' : 'ℹ'}</span>
+              <span>${c.mensagem}</span>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+
+      ${motivos.length ? `
+        <div class="panel-header" style="margin-top:2rem; margin-bottom:1rem; padding-bottom:0.75rem;">
+          <h3 class="panel-title" style="font-size:1.25rem; color:var(--status-reprovado);">
+            <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round"/></svg>
+            Fundamentação da Inaptidão
+          </h3>
+        </div>
+        <div class="checklist-rows">
+          ${motivos.map(m => `
+            <div class="checklist-row erro">
+              <span>✕</span>
+              <span>${m}</span>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    `;
+  }
+
+  function renderizarGridDados(d) {
+    const legendas = {
+      numeroProcessoCnj: 'Nº Processo CNJ',
+      nomeOutorgante: 'Outorgante (Mandante)',
+      cpfCnpjOutorgante: 'CPF / CNPJ Outorgante',
+      nomeOutorgado: 'Outorgado (Advogado)',
+      cpfCnpjOutorgado: 'CPF do Outorgado',
+      numeroOab: 'Registro OAB',
+      secionalOab: 'Seccional OAB',
+      dataOutorga: 'Data de Outorga',
+      dataValidade: 'Prazo de Validade',
+      poderesConcedidos: 'Poderes Concedidos',
+      finalidade: 'Finalidade Processual',
+      possuiAssinatura: 'Assinatura',
+      tipoAssinatura: 'Modalidade da Assinatura',
+      possuiCarimbo: 'Chancela / Carimbo'
+    };
+
+    return Object.entries(legendas).map(([chave, titulo]) => {
+      let valor = d[chave];
+      let vazio = false;
+      if (valor === null || valor === undefined || valor === '') {
+        valor = 'Não identificado';
+        vazio = true;
+      } else if (typeof valor === 'boolean') {
+        valor = valor ? 'Identificado' : 'Não localizado';
+      }
+
+      return `
+        <div class="data-cell">
+          <div class="data-cell-label">${titulo}</div>
+          <div class="data-cell-val ${vazio ? 'empty' : ''}">${valor}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Tabela Histórica
+  function atualizarTabelaHistorico() {
+    const tbody = document.getElementById('tbodyHistoricoLegal');
+    if (!listaHistorico.length) return;
+
+    tbody.innerHTML = listaHistorico.map((it, idx) => {
+      const cls = it.status === 'APROVADO' ? 'aprovado' : it.status === 'REPROVADO' ? 'reprovado' : 'revisao';
+      const label = it.status === 'APROVADO' ? 'Aprovado' : it.status === 'REPROVADO' ? 'Reprovado' : 'Revisão';
+      const hora = new Date(it.dataProcessamento).toLocaleTimeString('pt-BR');
+
+      return `
+        <tr>
+          <td><div class="doc-name">📄 ${it.nomeArquivo || 'documento.pdf'}</div></td>
+          <td><span class="badge-status-tab ${cls}">${label}</span></td>
+          <td style="font-family:'JetBrains Mono',monospace; font-size:0.8rem">${hora}</td>
+          <td style="font-family:'JetBrains Mono',monospace">${it.numeroProcessoCnj || '—'}</td>
+          <td>
+            <button class="btn-institution btn-institution-outline" onclick="abrirRegistroHistorico(${idx})">
+              Ver Parecer
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function abrirRegistroHistorico(i) {
+    exibirParecer(listaHistorico[i]);
+  }
+
+  function atualizarHistoricoVisual() {
+    atualizarTabelaHistorico();
+    dispararToast('Histórico atualizado.');
+  }
+
+  function dispararToast(txt) {
+    const deck = document.getElementById('toastDeck');
+    const box = document.createElement('div');
+    box.className = 'toast-msg';
+    box.innerHTML = `<span>⚖️</span><span>${txt}</span>`;
+    deck.appendChild(box);
+    setTimeout(() => box.remove(), 3500);
+  }
+
+  function formatarBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+    return (b / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+  </script>
+</body>
+</html>

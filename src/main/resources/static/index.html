@@ -1,225 +1,311 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validação Inteligente de Procurações | TJPE & CESAR School</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TJPE — Validação Inteligente de Procurações</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --marinho-profundo:  #081225;
+      --marinho-primario:   #0b1a36;
+      --marinho-card:       #0e2142;
+      --marinho-borda:      rgba(201, 169, 110, 0.18);
+      --champanhe:          #c9a96e;
+      --champanhe-claro:    #dfc99b;
+      --champanhe-suave:    rgba(201, 169, 110, 0.12);
+      --off-white:          #f8f9fa;
+      --off-white-card:     #ffffff;
+      --cinza-suave:        #e9ecef;
+      --cinza-grafite:      #4a5568;
+      --cinza-escuro:       #2d3748;
+      --texto-muted:        #8c9ba5;
+      --status-aprovado:    #2e7d58;
+      --status-aprovado-bg: rgba(46, 125, 88, 0.12);
+      --status-reprovado:   #9c3434;
+      --status-reprovado-bg:rgba(156, 52, 52, 0.12);
+      --status-revisao:     #b88228;
+      --status-revisao-bg:  rgba(184, 130, 40, 0.12);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --sombra-card: 0 10px 30px rgba(8, 18, 37, 0.08);
+      --transicao: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--off-white);
+      color: var(--cinza-escuro);
+      font-family: 'Manrope', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: var(--marinho-profundo);
+      border-bottom: 1px solid var(--marinho-borda);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      text-decoration: none;
+    }
+
+    .brand-seal {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--champanhe);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--marinho-card);
+    }
+
+    .brand-seal svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--champanhe);
+      stroke-width: 1.5;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--off-white);
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--champanhe-claro);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .hero-banner {
+      background: linear-gradient(180deg, var(--marinho-profundo) 0%, var(--marinho-primario) 100%);
+      color: var(--off-white);
+      padding: 4.5rem 2rem 5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+    }
+
+    .hero-pre-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--champanhe);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title span { color: var(--champanhe-claro); font-style: italic; }
+
+    .hero-description {
+      font-size: 1.05rem;
+      color: #b0bac9;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1260px;
+      width: 100%;
+      margin: -2.5rem auto 4rem;
+      padding: 0 2rem;
+      z-index: 10;
+    }
+
+    .card-panel {
+      background: var(--off-white-card);
+      border: 1px solid rgba(8, 18, 37, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--sombra-card);
+      margin-bottom: 2rem;
+    }
+
+    .panel-header {
+      border-bottom: 1px solid var(--cinza-suave);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .panel-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+    }
+
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .scenario-box {
+      border: 1px solid rgba(8, 18, 37, 0.1);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      background: var(--off-white);
+      cursor: pointer;
+      transition: var(--transicao);
+    }
+
+    .scenario-box:hover {
+      border-color: var(--champanhe);
+      background: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .scenario-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--marinho-profundo);
+      margin: 0.5rem 0;
+    }
+
+    .upload-zone-legal {
+      border: 1.5px dashed rgba(8, 18, 37, 0.2);
+      border-radius: var(--radius-md);
+      padding: 3rem 2rem;
+      text-align: center;
+      background: #fafbfc;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .upload-zone-legal input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+    .btn-institution {
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-transform: uppercase;
+      background: var(--marinho-profundo);
+      color: var(--champanhe-claro);
+      border: 1px solid var(--champanhe);
+    }
+
+    footer {
+      background-color: var(--marinho-profundo);
+      border-top: 1px solid var(--marinho-borda);
+      padding: 2.25rem 1.5rem;
+      margin-top: auto;
+      text-align: center;
+    }
+
+    .footer-single-text {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--champanhe-claro);
+      letter-spacing: 0.06em;
+      opacity: 0.9;
+    }
+
+    .hidden { display: none !important; }
+  </style>
 </head>
 <body>
-    <!-- Topo Institucional -->
-    <header class="header">
-        <div class="header-container">
-            <div class="logo-area">
-                <div class="logo-badge">TJPE</div>
-                <div>
-                    <h1 class="logo-title">Tribunal de Justiça de Pernambuco</h1>
-                    <p class="logo-subtitle">Sistema de Validação Inteligente de Procurações Ad Judicia &bull; CESAR School</p>
-                </div>
-            </div>
-            <div class="header-status">
-                <span class="status-indicator"></span>
-                <span>Motor IA & OCR Ativos</span>
-            </div>
+
+  <header>
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-seal">
+          <svg viewBox="0 0 24 24"><path d="M12 3v18M3 9l9-6 9 6M5 14h14M8 21h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-    </header>
-
-    <main class="main-container">
-        <!-- Banner de Contexto Acadêmico -->
-        <section class="academic-banner">
-            <div class="banner-content">
-                <strong>Projeto Acadêmico CESAR School:</strong> Validação automatizada de mandatos judiciais com pré-processamento de imagens (OpenCV), extração óptica (Tesseract OCR), interpretação semântica com Inteligência Artificial e checagem de conformidade com as regras do TJPE e CPC.
-            </div>
-        </section>
-
-        <!-- Seção de Ações Rápidas de Teste dos 3 Cenários -->
-        <section class="test-scenarios-card">
-            <div class="card-header">
-                <h2>🧪 Cenários Acadêmicos Obrigatórios (Teste em 1 Clique)</h2>
-                <p>Execute instantaneamente os 3 cenários de teste exigidos na especificação acadêmica:</p>
-            </div>
-            <div class="scenarios-grid">
-                <div class="scenario-box scenario-green" onclick="executarCenario('cenario1')">
-                    <div class="scenario-tag tag-aprovado">Cenário 1: Válida</div>
-                    <h3>Procuração Aprovada</h3>
-                    <p>Documento completo, outorgante e outorgado regulares, OAB/PE ativa, assinatura Gov.br e poderes forenses.</p>
-                    <button class="btn btn-sm btn-outline">Testar Cenário 1 &rarr;</button>
-                </div>
-                <div class="scenario-box scenario-red" onclick="executarCenario('cenario2')">
-                    <div class="scenario-tag tag-reprovado">Cenário 2: Vencida</div>
-                    <h3>Procuração Reprovada</h3>
-                    <p>Documento com prazo de validade expresso expirado em 2023. Gera justificativa objetiva de rejeição.</p>
-                    <button class="btn btn-sm btn-outline">Testar Cenário 2 &rarr;</button>
-                </div>
-                <div class="scenario-box scenario-yellow" onclick="executarCenario('cenario3')">
-                    <div class="scenario-tag tag-revisao">Cenário 3: Ilegível</div>
-                    <h3>Revisão Manual</h3>
-                    <p>Documento com ruído de digitalização, corte de imagem ou texto truncado que impede OCR integral.</p>
-                    <button class="btn btn-sm btn-outline">Testar Cenário 3 &rarr;</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção de Upload do Advogado -->
-        <section class="upload-section card">
-            <div class="card-header">
-                <h2>📤 Envio de Procuração pelo Advogado</h2>
-                <p>Selecione um arquivo nos formatos <strong>PDF</strong> ou imagem (<strong>JPG / PNG</strong>) até 25MB.</p>
-            </div>
-
-            <form id="uploadForm" class="upload-form">
-                <div class="form-group">
-                    <label for="numeroProcessoCnj">Número do Processo CNJ (Opcional caso já conste no documento):</label>
-                    <input type="text" id="numeroProcessoCnj" name="numeroProcessoCnj" placeholder="Ex: 0001234-56.2024.8.17.0001" class="form-control">
-                    <small class="form-hint">O sistema confere automaticamente o cálculo Módulo 97 da Resolução CNJ 65/2008 e o ramo TJPE (.8.17).</small>
-                </div>
-
-                <div id="dropZone" class="drop-zone">
-                    <div class="drop-zone-icon">📄</div>
-                    <div class="drop-zone-text">
-                        <strong>Clique para selecionar ou arraste o arquivo aqui</strong>
-                        <span>PDF, JPG, JPEG ou PNG</span>
-                    </div>
-                    <input type="file" id="fileInput" name="file" accept=".pdf,.png,.jpg,.jpeg" class="file-input">
-                </div>
-
-                <div id="selectedFileInfo" class="selected-file-info hidden">
-                    <span id="fileName"></span>
-                    <button type="button" id="removeFileBtn" class="btn-text">&times; Remover</button>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" id="btnSubmit" class="btn btn-primary" disabled>
-                        <span>Analisar e Validar Procuração</span>
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- Indicador de Carregamento e Pipeline em Tempo Real -->
-        <section id="pipelineSection" class="pipeline-section card hidden">
-            <h3>Processamento em Andamento...</h3>
-            <div class="pipeline-steps">
-                <div class="pipeline-step active" id="step1">
-                    <div class="step-num">1</div>
-                    <div class="step-label">Upload Seguro</div>
-                </div>
-                <div class="pipeline-step active" id="step2">
-                    <div class="step-num">2</div>
-                    <div class="step-label">OpenCV Tratamento</div>
-                </div>
-                <div class="pipeline-step active" id="step3">
-                    <div class="step-num">3</div>
-                    <div class="step-label">Tesseract OCR</div>
-                </div>
-                <div class="pipeline-step active" id="step4">
-                    <div class="step-num">4</div>
-                    <div class="step-label">IA / LLM JSON</div>
-                </div>
-                <div class="pipeline-step active" id="step5">
-                    <div class="step-num">5</div>
-                    <div class="step-label">Regras TJPE</div>
-                </div>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar"></div>
-            </div>
-        </section>
-
-        <!-- Seção de Exibição dos Resultados -->
-        <section id="resultSection" class="result-section card hidden">
-            <div class="result-header">
-                <div id="resultStatusBadge" class="status-badge">APROVADO</div>
-                <div>
-                    <h2 id="resultTitle">Resultado da Validação</h2>
-                    <p id="resultSubtitle" class="text-muted"></p>
-                </div>
-            </div>
-
-            <!-- Justificativas em Linguagem Simples -->
-            <div class="justifications-container">
-                <h3>Motivos / Justificativas:</h3>
-                <ul id="justificationsList" class="justifications-list"></ul>
-            </div>
-
-            <!-- Tabela com os 11 Campos Extraídos (OCR + IA) -->
-            <div class="data-table-container">
-                <h3>Informações Identificadas no Documento (Extração IA / LLM)</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Campo Exigido</th>
-                            <th>Dado Extraído</th>
-                            <th>Status de Detecção</th>
-                        </tr>
-                    </thead>
-                    <tbody id="extractedDataBody">
-                        <!-- Preenchido via Javascript -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Detalhamento das 10 Regras do TJPE -->
-            <div class="rules-detail-container">
-                <details>
-                    <summary><strong>Ver detalhamento técnico das 10 regras de conformidade do TJPE</strong></summary>
-                    <ul id="rulesDetailList" class="rules-list"></ul>
-                </details>
-            </div>
-
-            <!-- Visualização do Texto Extraído pelo OCR -->
-            <div class="ocr-text-container">
-                <details>
-                    <summary><strong>Ver texto bruto lido pelo Tesseract OCR</strong></summary>
-                    <pre id="rawOcrText" class="ocr-pre"></pre>
-                </details>
-            </div>
-        </section>
-
-        <!-- Histórico de Validações Gravadas no PostgreSQL -->
-        <section class="history-section card">
-            <div class="card-header flex-between">
-                <div>
-                    <h2>🗂️ Histórico de Validações no PostgreSQL</h2>
-                    <p>Registros salvos de procurações processadas no tribunal.</p>
-                </div>
-                <button onclick="carregarHistorico()" class="btn btn-sm btn-outline">Atualizar Histórico</button>
-            </div>
-
-            <div class="table-responsive">
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Arquivo</th>
-                            <th>Processo CNJ</th>
-                            <th>Outorgante</th>
-                            <th>Outorgado</th>
-                            <th>Data/Hora</th>
-                            <th>Parecer</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyTableBody">
-                        <tr>
-                            <td colspan="8" class="text-center">Carregando histórico...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="footer-container">
-            <p>Tribunal de Justiça do Estado de Pernambuco &bull; TJPE &bull; Todos os direitos reservados</p>
-            <p>Desenvolvido para CESAR School | Programa de Residência e Extensão Tecnológica</p>
+        <div>
+          <div class="brand-name">Tribunal de Justiça de Pernambuco</div>
+          <div class="brand-subtitle">Validação Inteligente de Procurações</div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </header>
 
-    <script src="js/app.js"></script>
+  <section class="hero-banner">
+    <div class="hero-pre-title">Serviços Digitais TJPE • Inteligência Artificial</div>
+    <h1 class="hero-title">Conformidade e Validação de <span>Procurações Ad Judicia</span></h1>
+    <p class="hero-description">Leitura automatizada via OCR e conferência de poderes outorgados, autenticidade e vigência.</p>
+  </section>
+
+  <main>
+    <section class="card-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Cenários de Demonstração Interativa</h2>
+      </div>
+      <div class="scenarios-grid">
+        <div class="scenario-box">
+          <div class="scenario-title">Instrumento Regular e Vigente</div>
+          <p style="font-size:0.85rem;color:var(--cinza-grafite)">Atende a todas as exigências do CPC: poderes gerais e especiais.</p>
+        </div>
+        <div class="scenario-box">
+          <div class="scenario-title">Prazo de Mandato Expirado</div>
+          <p style="font-size:0.85rem;color:var(--cinza-grafite)">Procuração com cláusula de validade resolutiva vencida.</p>
+        </div>
+        <div class="scenario-box">
+          <div class="scenario-title">Digitalização com Baixa Resolução</div>
+          <p style="font-size:0.85rem;color:var(--cinza-grafite)">Documento ilegível impede a identificação de firmas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Submissão de Documento</h2>
+      </div>
+      <div class="upload-zone-legal">
+        <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" />
+        <p style="font-weight:600;color:var(--marinho-profundo);margin-bottom:0.5rem">Arraste a procuração judicial até aqui ou clique para selecionar</p>
+        <span style="font-size:0.8rem;color:var(--texto-muted)">PDF, JPG, PNG (Até 25 MB)</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-single-text">
+      CESAR School e Porto Digital • Residência de Software 2026
+    </div>
+  </footer>
+
 </body>
 </html>
