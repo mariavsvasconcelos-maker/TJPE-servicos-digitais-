@@ -1,0 +1,61 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: tjpe-validador-procuracoes
+
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 30MB
+
+  # Banco de Dados Principal: PostgreSQL
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/tjpe_procuracoes_db}
+    username: ${SPRING_DATASOURCE_USERNAME:tjpe_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:tjpe_secret_password}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+# Configurações do Validador TJPE
+tjpe:
+  validador:
+    # Seccional padrão do tribunal
+    seccional-padrao: "PE"
+    
+    # Tolerância de dias para data de outorga futura (erro de digitação)
+    tolerancia-dias-futuro: 1
+    
+    # Limiar mínimo de caracteres no OCR para considerar documento legível
+    limiar-caracteres-legibilidade: 60
+    
+    # Provedor de LLM configurável: local-mock | openai | gemini | ollama
+    llm:
+      provider: ${TJPE_LLM_PROVIDER:local-mock}
+      api-key: ${TJPE_LLM_API_KEY:}
+      api-url: ${TJPE_LLM_API_URL:}
+      model: ${TJPE_LLM_MODEL:gpt-4o-mini}
+      temperature: 0.0
+
+    # Modo das integrações externas (PJe e CNA/OAB)
+    integracoes:
+      modo-simulado: true
+      aviso-academico: "AMBIENTE DE DEMONSTRAÇÃO ACADÊMICA CESAR SCHOOL / TJPE"
+
+logging:
+  level:
+    root: INFO
+    br.org.cesar.tjpe: DEBUG
