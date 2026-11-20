@@ -1,8 +1,8 @@
 # Validação Inteligente de Procuração ad Judicia
 
-<p align="center">**Caso:** TJPE (serviços digitais) · **Documento:** procuração ad judicia · </p>
-<p align="center">**Autoria:** Maria Eduarda Vasconcelos </p>
-<p align="center">**Residência Tecnológica:** CESAR School e Porto Digital 2026.2  </p>                                                                                
+**Caso:** TJPE (serviços digitais) · **Documento:** procuração ad judicia ·
+**Autoria:** Maria Eduarda Vasconcelos
+**Residência Tecnológica:** CESAR School e Porto Digital 2026.2                                                                              
 ![Java](https://img.shields.io/badge/Java-21-informational?style=flat-square)![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-informational?style=flat-square)![OpenCV](https://img.shields.io/badge/OpenCV-visão%20computacional-informational?style=flat-square)![Tesseract](https://img.shields.io/badge/Tesseract-OCR-informational?style=flat-square)![PostgreSQL](https://img.shields.io/badge/PostgreSQL-persistência-informational?style=flat-square)
 
 ## Problema
