@@ -23,13 +23,13 @@ Campo não encontrado retorna `null` — a IA não inventa informações. O resu
 
 ## Regras de validação
 1. Campos obrigatórios presentes (processo, CPF/CNPJ, OAB, datas, poderes).
-2. Documento assinado e, quando aplicável, dentro da validade.3
+2. Documento assinado e, quando aplicável, dentro da validade.
 3. CPF/CNPJ com formato válido e dígitos verificadores corretos (regex + cálculo em Java).
 4. Número do processo (CNJ) e partes conferem com o processo no PJe.
 5. Finalidade compatível com o ato processual e OAB ativa.
 6. Protocolo dentro do prazo aplicável, documento legível, com assinatura e carimbo.
 
-## Aprovação e rejeição
+## Aprovação e rejeição 
 
 **Aprovado** quando todas as regras são atendidas: dados conferem com o PJe, procuração assinada e válida, OAB ativa, prazo respeitado e documento legível. O status é salvo no banco e devolvido pela API; a petição segue sem conferência manual.
 
