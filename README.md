@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sistema de Validação Inteligente de Procurações Ad Judicia — TJPE & CESAR School
 
 [![Java 21](https://img.shields.io/badge/Java-21%20LTS-orange.svg)](https://www.oracle.com/java/)
@@ -272,3 +273,7 @@ tjpe:
 - **Instituição:** CESAR School
 - **Tribunal Parceiro:** Tribunal de Justiça de Pernambuco (TJPE)
 - **Disciplina:** Residência em Engenharia de Software / Projetos Tecnológicos
+=======
+# TJPE-servicos-digitais-
+O processo de validação manual de procurações no TJPE ocasiona atrasos, retrabalho e sobrecarga dos servidores. A proposta consiste em implementar a validação automática de assinaturas digitais no momento do protocolo, fornecendo feedback imediato, reduzindo deslocamentos ao cartório e minimizando riscos de descumprimento de prazos processuais.
+>>>>>>> b4e024d794a9e0d40b7c395004a08d53ced9c065
