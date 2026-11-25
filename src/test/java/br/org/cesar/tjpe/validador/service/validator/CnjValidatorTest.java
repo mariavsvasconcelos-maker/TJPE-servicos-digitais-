@@ -28,6 +28,18 @@ class CnjValidatorTest {
     }
 
     @Test
+    @DisplayName("Deve aceitar números de processo reais (ISO 7064 Mód. 97-10: DV = 98 - resto)")
+    void deveValidarNumerosReaisDoPadraoCnj() {
+        // Exemplo publicado na documentação da API pública DataJud, do próprio CNJ
+        assertTrue(validator.isValid("0000832-35.2018.4.01.3202"));
+        // Número usado no Cenário 1 de demonstração
+        assertTrue(validator.isValid("0001234-29.2024.8.17.0001"));
+        assertTrue(validator.isTjpe("0001234-29.2024.8.17.0001"));
+        // A fórmula antiga (97 - resto) gerava DV 28, que não é válido
+        assertFalse(validator.isValid("0001234-28.2024.8.17.0001"));
+    }
+
+    @Test
     @DisplayName("Deve rejeitar CNJ com dígito verificador adulterado")
     void deveRejeitarCnjComDvInvalido() {
         String cnjAdulterado = "0001234-99.2024.8.17.0001";

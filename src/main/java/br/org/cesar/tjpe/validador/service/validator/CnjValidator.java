@@ -54,7 +54,8 @@ public class CnjValidator {
         String numeroParaCalculo = sequencial + ano + justica + tribunal + origem + "00";
         BigInteger num = new BigInteger(numeroParaCalculo);
         int resto = num.mod(BigInteger.valueOf(97)).intValue();
-        int dv = 97 - resto;
+        // ISO 7064 Módulo 97 Base 10 (Anexo VIII da Resolução CNJ 65/2008): DV = 98 - resto
+        int dv = 98 - resto;
         return String.format("%02d", dv);
     }
 

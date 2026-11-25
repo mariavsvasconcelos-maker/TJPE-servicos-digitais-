@@ -80,7 +80,7 @@ public class CenariosTesteController {
                         "application/pdf",
                         OcrService.CenarioOcrTextos.CENARIO_1_VALIDA.getBytes(StandardCharsets.UTF_8)
                 );
-                return ResponseEntity.ok(processingService.processarDocumento(file, "0001234-56.2024.8.17.0001"));
+                return ResponseEntity.ok(processingService.processarDocumento(file, "0001234-29.2024.8.17.0001"));
 
             case "cenario2":
             case "vencida":
