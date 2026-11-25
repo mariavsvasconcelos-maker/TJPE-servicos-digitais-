@@ -3,7 +3,8 @@
 # Validação Inteligente de Procuração Ad Judicia
 
 **Caso:** TJPE (serviços digitais) · **Documento:** procuração ad judicia · **Autoria:** Maria Eduarda Vasconcelos  
-**Residência Tecnológica:** CESAR School e Porto Digital 2026.2
+**Residência Tecnológica:** CESAR School e Porto Digital 2026.2  
+**Demonstração online:** [mariavsvasconcelos-maker.github.io/TJPE-servicos-digitais-](https://mariavsvasconcelos-maker.github.io/TJPE-servicos-digitais-/)
 
 [![Java](https://img.shields.io/badge/Java-21-5382A1?style=flat-square)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1-6DB33F?style=flat-square)](https://spring.io/projects/spring-boot)
