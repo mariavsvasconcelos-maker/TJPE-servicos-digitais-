@@ -47,7 +47,7 @@ public class PjeIntegrationClient {
                 aviso,
                 true,
                 "MARIA SILVA SANTOS",
-                "123.456.789-00",
+                "529.982.247-25",
                 "1ª Vara Cível da Comarca de Recife - TJPE",
                 "TRAMITAÇÃO REGULAR"
         );

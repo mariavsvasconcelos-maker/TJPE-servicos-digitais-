@@ -133,11 +133,23 @@ public class LlmExtractionService {
 
         Pattern cpfCnpjPat = Pattern.compile("(?:CPF|CNPJ)[^\\d]*?(\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}|\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2})", Pattern.CASE_INSENSITIVE);
         Matcher mCpf = cpfCnpjPat.matcher(texto);
-        if (mCpf.find()) {
-            d.setOutorganteCpfCnpj(mCpf.group(1).trim());
-        } else {
-            d.setOutorganteCpfCnpj(null);
+        // O primeiro CPF/CNPJ antes do bloco "OUTORGADO" é do outorgante; o primeiro depois dele é do advogado
+        int inicioOutorgado = texto.indexOf("OUTORGADO");
+        if (inicioOutorgado < 0) {
+            inicioOutorgado = texto.toUpperCase().indexOf("OUTORGADO");
         }
+        String cpfOutorgante = null;
+        String cpfOutorgado = null;
+        while (mCpf.find()) {
+            String valor = mCpf.group(1).trim();
+            if (inicioOutorgado >= 0 && mCpf.start() > inicioOutorgado) {
+                if (cpfOutorgado == null) cpfOutorgado = valor;
+            } else if (cpfOutorgante == null) {
+                cpfOutorgante = valor;
+            }
+        }
+        d.setOutorganteCpfCnpj(cpfOutorgante);
+        d.setOutorgadoCpfCnpj(cpfOutorgado);
 
         // 3. Outorgado (Nome, CPF e OAB)
         Pattern outorgadoPat = Pattern.compile("OUTORGADO[\\s:]*([^,\\n]+?)(?:,|\\n|brasileir|advogad|inscrit)", Pattern.CASE_INSENSITIVE);
@@ -160,7 +172,7 @@ public class LlmExtractionService {
         }
 
         // 4. Data de Outorga
-        Pattern dataPat = Pattern.compile("(?:em|data|Recife/PE,|Recife,)[\\s:]*(\\d{1,2})[\\s/de]+([A-Za-zç]+|\\d{1,2})[\\s/de]+(\\d{4})", Pattern.CASE_INSENSITIVE);
+        Pattern dataPat = Pattern.compile("(?:\\bem\\b|\\bdata\\b|Recife/PE,|Recife,)[\\s:]*(\\d{1,2})[\\s/de]+(\\p{L}+|\\d{1,2})[\\s/de]+(\\d{4})", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         Matcher mData = dataPat.matcher(texto);
         if (mData.find()) {
             try {
@@ -176,10 +188,11 @@ public class LlmExtractionService {
             d.setDataOutorga(null);
         }
 
-        // 5. Prazo de validade
-        Pattern validadePat = Pattern.compile("(?:validade|vencimento|válida até)[^\\d]*?(\\d{1,2})[\\s/de]+([A-Za-zç]+|\\d{1,2})[\\s/de]+(\\d{4})", Pattern.CASE_INSENSITIVE);
+        // 5. Prazo de validade: só aceita uma data na MESMA linha da palavra-chave,
+        // para não confundir com a data de assinatura; "prazo indeterminado" = sem vencimento (art. 682 do CC)
+        Pattern validadePat = Pattern.compile("(?:validade|vencimento|válida até|valida até)[^\\d\\n]*?(\\d{1,2})[ \\t/de]+(\\p{L}+|\\d{1,2})[ \\t/de]+(\\d{4})", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         Matcher mValidade = validadePat.matcher(texto);
-        if (mValidade.find()) {
+        if (mValidade.find() && !mValidade.group(0).toLowerCase().contains("indetermin")) {
             try {
                 int dia = Integer.parseInt(mValidade.group(1));
                 int mes = converterMes(mValidade.group(2).toLowerCase());

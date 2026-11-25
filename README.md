@@ -9,7 +9,7 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1-6DB33F?style=flat-square)](https://spring.io/projects/spring-boot)
 [![Tesseract](https://img.shields.io/badge/Tesseract-OCR-5382A1?style=flat-square)](https://github.com/tesseract-ocr/tesseract)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-0288D1?style=flat-square)](https://www.postgresql.org/)
-[![Testes](https://img.shields.io/badge/testes-11%20passando-2E7D58?style=flat-square)](#como-executar)
+[![Testes](https://img.shields.io/badge/testes-15%20passando-2E7D58?style=flat-square)](#como-executar)
 
 </div>
 
@@ -165,7 +165,15 @@ O sistema é validado com três cenários, montados com documentos de exemplo:
 
 **Pré-requisitos:** Java 21 e Maven 3.9+. Opcionais: Docker (para o PostgreSQL) e Tesseract com o idioma português instalado no PATH. No Windows, `.\mvnw.cmd` pode ser usado no lugar de `mvn`.
 
-**Rodar os testes** (11 testes: CPF/CNPJ, número CNJ, os 3 cenários e a inicialização da aplicação):
+**Jeito mais fácil (Windows):** na pasta do projeto, rode o comando abaixo (ou dê dois cliques no arquivo). Ele liga o sistema e abre o navegador sozinho quando estiver pronto:
+
+```powershell
+.\abrir-site.cmd
+```
+
+Para desligar, feche a janela "TJPE - Servidor".
+
+**Rodar os testes** (15 testes: CPF/CNPJ, número CNJ, regras, os 3 cenários de ponta a ponta — do documento ao parecer — e a inicialização da aplicação):
 
 ```bash
 mvn test

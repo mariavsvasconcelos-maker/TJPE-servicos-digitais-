@@ -97,13 +97,16 @@ public class OcrService {
     }
 
     private String extrairTextoFallback(byte[] bytes, String nomeArquivo) {
-        // Tenta decodificar string embutida de PDFs ou texto embutido
-        String raw = new String(bytes, StandardCharsets.ISO_8859_1);
-        if (raw.contains("PROCURAÇÃO") || raw.contains("OUTORGANTE") || raw.contains("AD JUDICIA")) {
-            // Limpa caracteres binários mantendo texto legível
+        // Tenta decodificar texto embutido no arquivo (UTF-8; ISO-8859-1 como alternativa para arquivos antigos)
+        String raw = new String(bytes, StandardCharsets.UTF_8);
+        if (!raw.toUpperCase().contains("PROCURAÇÃO") && !raw.contains("OUTORGANTE") && !raw.toUpperCase().contains("AD JUDICIA")) {
+            raw = new String(bytes, StandardCharsets.ISO_8859_1);
+        }
+        if (raw.toUpperCase().contains("PROCURAÇÃO") || raw.contains("OUTORGANTE") || raw.toUpperCase().contains("AD JUDICIA")) {
+            // Limpa caracteres binários mantendo texto legível (inclusive letras acentuadas)
             StringBuilder sb = new StringBuilder();
             for (char c : raw.toCharArray()) {
-                if ((c >= 32 && c <= 126) || c == '\n' || c == '\r' || (c >= 192 && c <= 255)) {
+                if (c == '\n' || c == '\r' || c == '\t' || (c != '�' && !Character.isISOControl(c))) {
                     sb.append(c);
                 }
             }
@@ -132,11 +135,11 @@ public class OcrService {
                 
                 OUTORGANTE:
                 MARIA SILVA SANTOS, brasileira, solteira, servidora pública, portadora do RG nº 1.234.567 SDS/PE,
-                inscrita no CPF sob o nº 123.456.789-00, residente e domiciliada na Av. Agamenon Magalhães, 1000, Recife/PE.
-                
+                inscrita no CPF sob o nº 529.982.247-25, residente e domiciliada na Av. Agamenon Magalhães, 1000, Recife/PE.
+
                 OUTORGADO:
                 DR. CARLOS EDUARDO DE ALBUQUERQUE, brasileiro, casado, advogado regularmente inscrito na
-                OAB/PE sob o nº 45.678 e no CPF nº 987.654.321-99, com escritório profissional na Rua da Aurora, 200, Recife/PE.
+                OAB/PE sob o nº 45.678 e no CPF nº 987.654.321-00, com escritório profissional na Rua da Aurora, 200, Recife/PE.
                 
                 PODERES:
                 Pelo presente instrumento particular de procuração, a outorgante confere ao outorgado amplos poderes
@@ -145,7 +148,7 @@ public class OcrService {
                 atos necessários ao fiel cumprimento deste mandato.
                 
                 FINALIDADE:
-                Representação processual nos autos da Ação de Cobrança nº 0001234-56.2024.8.17.0001 perante o TJPE.
+                Representação processual nos autos da Ação de Cobrança nº 0001234-29.2024.8.17.0001 perante o TJPE.
                 
                 PRAZO DE VALIDADE:
                 Instrumento outorgado por prazo indeterminado até revogação expressa.
@@ -164,7 +167,7 @@ public class OcrService {
                 residente na Rua do Bom Jesus, 50, Bairro do Recife, Recife/PE.
                 
                 OUTORGADO:
-                DR. LUCAS MARTINS BEZERRA, advogado inscrito na OAB/PE sob o nº 32.100 e no CPF nº 888.777.666-55.
+                DR. LUCAS MARTINS BEZERRA, advogado inscrito na OAB/PE sob o nº 32.100 e no CPF nº 888.777.666-03.
                 
                 PODERES:
                 Poderes da cláusula ad judicia para representação perante o TJPE.
